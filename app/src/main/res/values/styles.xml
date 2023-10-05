@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style
-        name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        name="RoundCardView" parent="CardView">
+        <item name="cardCornerRadius">10dp</item>
+        <item name="cardElevation">5dp</item>
     </style>
 </resources>
