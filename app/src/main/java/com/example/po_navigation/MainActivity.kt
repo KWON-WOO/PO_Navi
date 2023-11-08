@@ -11,11 +11,13 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.ListFragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.skt.Tmap.*
 import com.skt.Tmap.TMapData.FindAllPOIListenerCallback
 import com.skt.Tmap.poi_item.TMapPOIItem
+import kotlin.reflect.typeOf
 
 
 class MainActivity : AppCompatActivity() {
@@ -26,6 +28,11 @@ class MainActivity : AppCompatActivity() {
         val tmaptapi: TMapTapi = TMapTapi(this)
         // Tmap 설치여부 확인
         val isTmapApp: Boolean = tmaptapi.isTmapApplicationInstalled
+
+        val itemName = ArrayList<String>()
+        val itemAddress = ArrayList<String>()
+        val itemLat = ArrayList<Double>()
+        val itemLon = ArrayList<Double>()
 
 // 현재 테스트 디바이스에 TMap이 깔려있으나 작동이상으로 검토 중
         if (true) {
@@ -49,34 +56,9 @@ class MainActivity : AppCompatActivity() {
 //            검색버튼 이벤트. 테스트 중이라 네이버로 넘어가게 설정. 이후에 T맵 연동되도록 수정 예정
             searchButton.setOnClickListener {
                 val query = searchBar.text.toString()
-                val tmapdata = TMapData()
-                var itemName: ArrayList<String> = arrayListOf()
-                var itemAddress: ArrayList<String> = arrayListOf()
-                var itemLat: ArrayList<Double> = arrayListOf()
-                var itemLon: ArrayList<Double> = arrayListOf()
 
-                tmapdata.findAllPOI(query,
-                    FindAllPOIListenerCallback { poiItem ->
-                        for (i in 0 until poiItem.size) {
-                            val item = poiItem[i] as TMapPOIItem
-                            val Address = tmapdata.convertGpsToAddress(
-                                item.noorLat.toDouble(),
-                                item.noorLon.toDouble()
-                            )
-
-                            itemName.add(item.poiName.toString())
-                            itemAddress.add(Address.toString())
-                            itemLat.add(item.noorLat.toDouble())
-                            itemLon.add(item.noorLon.toDouble())
-
-                            Log.d(
-                                "POI Name: ", itemName[i] + " , " +
-                                        "Address: " + Address.toString() + ", " +
-                                        "Point: " + item.poiPoint.toString()
-                            )
-                        }
-                    })
-                showList(itemName, this)
+                Log.d("POI Name: ", itemName.size.toString())
+                showBSDList(query,itemName, this)
             }
 
 
