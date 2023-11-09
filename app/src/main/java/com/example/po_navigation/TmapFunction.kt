@@ -1,15 +1,15 @@
 package com.example.po_navigation
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.ListFragment
+import androidx.recyclerview.widget.RecyclerView
 import com.skt.Tmap.TMapData
-import com.skt.Tmap.poi_item.TMapPOIItem
+
 
 //키보드 비활성화를 위한 함수
 fun hideKeyboard(context:Context, view: View) {
@@ -17,66 +17,54 @@ fun hideKeyboard(context:Context, view: View) {
     imm.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
-fun showList(list:ArrayList<String>, activity: FragmentActivity){
+fun showList(query:String, activity: FragmentActivity){
+    val tmapdata = TMapData()
     val lFragment = BSDListFragment()
+    val recyclerView = activity.findViewById<RecyclerView>(R.id.path_recycler_view)
     val bundle = Bundle()
-    list?.let {bundle.putStringArrayList("list", it)}
-    lFragment.arguments = bundle
-    for (i in 0 until list.size) {
-        Log.d(
-            "POI Name: ", list[i] + "++++++++++++"
-        )
+    val listInfo = ArrayList<Item>()
+    val Address = ArrayList<String>()
+
+    tmapdata.findAllPOI(query) { poiItem ->
+        for (i in 0 until poiItem.size) {
+            val item = poiItem[i]
+            Address.add(
+                tmapdata.convertGpsToAddress(
+                    poiItem[i].noorLat.toDouble(),
+                    poiItem[i].noorLon.toDouble()
+                ).toString())
+                        listInfo.add(Item(poiItem[i].poiName,
+                            Address[i],
+                            poiItem[i].noorLat.toDouble(),
+                            poiItem[i].noorLon.toDouble(), 1)
+                        )
+        }
+        val intent = Intent(activity, BSDListFragment::class.java)
+        intent.putExtra("listInfo", listInfo)
+
+        lFragment.show(activity.supportFragmentManager, "list")
     }
-    lFragment.show(activity.supportFragmentManager, lFragment.tag)
-}
-
-fun POISearch(query: String){
-    val itemName = ArrayList<String>()
-    val itemAddress = ArrayList<String>()
-    val itemLat = ArrayList<Double>()
-    val itemLon = ArrayList<Double>()
-    val tmapdata = TMapData()
-    tmapdata.findAllPOI(query,
-        TMapData.FindAllPOIListenerCallback { poiItem ->
-            for (i in 0 until poiItem.size) {
-                val item = poiItem[i] as TMapPOIItem
-                val Address = tmapdata.convertGpsToAddress(
-                    item.noorLat.toDouble(),
-                    item.noorLon.toDouble()
-                )
-                itemName.add(item.poiName.toString())
-                itemAddress.add(Address.toString())
-                itemLat.add(item.noorLat.toDouble())
-                itemLon.add(item.noorLon.toDouble())
-                Log.d("POI Name: ", itemName.size.toString())
-            }
-//             여기서 데이터 사용
-            Log.d("POI Size: ", itemLat.size.toString())
-        })
-}
-
-fun showBSDList(query: String, list:ArrayList<String>, activity: FragmentActivity){
-    val itemName = ArrayList<String>()
-    val itemAddress = ArrayList<String>()
-    val itemLat = ArrayList<Double>()
-    val itemLon = ArrayList<Double>()
-    val tmapdata = TMapData()
-    tmapdata.findAllPOI(query,
-        TMapData.FindAllPOIListenerCallback { poiItem ->
-            for (i in 0 until poiItem.size) {
-                val item = poiItem[i] as TMapPOIItem
-                val Address = tmapdata.convertGpsToAddress(
-                    item.noorLat.toDouble(),
-                    item.noorLon.toDouble()
-                )
-                itemName.add(item.poiName.toString())
-                itemAddress.add(Address.toString())
-                itemLat.add(item.noorLat.toDouble())
-                itemLon.add(item.noorLon.toDouble())
-                Log.d("POI Name: ", itemName.size.toString())
-            }
-//             여기서 데이터 사용
-            showList(list,activity)
-            Log.d("POI Size: ", itemLat.size.toString())
-        })
+//    POIItem?.let {
+//        for (i in 0 until it.size) {
+//            Address.add(
+//                tmapdata.convertGpsToAddress(
+//                    it[i].noorLat.toDouble(),
+//                    it[i].noorLon.toDouble()
+//                ).toString()
+//            )
+//
+//            listInfo.add(
+//                "Name : " + it[i].poiName
+////                        "\n Address : " + Address +
+////                        "\n Lat : " + it[i].noorLat.toString() +
+////                        "\n Lon : " + it[i].noorLon.toString() + "\n"
+//            )
+//        }
+//    }
+//
+//    listInfo.add("널인건가")
+//    bundle.putStringArrayList("list", listInfo)
+//    lFragment.arguments = bundle
+//
+//    lFragment.show(activity.supportFragmentManager, lFragment.tag)
 }

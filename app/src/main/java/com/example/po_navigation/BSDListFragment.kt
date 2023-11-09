@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 //수정예정
@@ -17,7 +18,17 @@ class BSDListFragment : BottomSheetDialogFragment(R.style.AppBottomSheetDialogTh
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.location_search, container, false)
+        val view = inflater.inflate(R.layout.path_recyclerview, container, false)
+
+        val recyclerView = view.findViewById<RecyclerView>(R.id.path_recycler_view)
+
+        val listInfo = intent.getParcelableArrayListExtra<Item>("listInfo")
+
+        val adapter = RCAdapter(listInfo)
+
+        recyclerView.adapter = adapter
+
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?){
@@ -31,3 +42,4 @@ class BSDListFragment : BottomSheetDialogFragment(R.style.AppBottomSheetDialogTh
         listView.adapter = adapter
     }
 }
+
