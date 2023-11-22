@@ -22,7 +22,7 @@ fun showList(query:String, activity: FragmentActivity){
     val lFragment = BSDListFragment()
     val recyclerView = activity.findViewById<RecyclerView>(R.id.path_recycler_view)
     val bundle = Bundle()
-    val listInfo = ArrayList<Item>()
+    val listInfo = ArrayList<MapData>()
     val Address = ArrayList<String>()
 
     tmapdata.findAllPOI(query) { poiItem ->
@@ -33,7 +33,7 @@ fun showList(query:String, activity: FragmentActivity){
                     poiItem[i].noorLat.toDouble(),
                     poiItem[i].noorLon.toDouble()
                 ).toString())
-                        listInfo.add(Item(poiItem[i].poiName,
+                        listInfo.add(MapData(poiItem[i].poiName,
                             Address[i],
                             poiItem[i].noorLat.toDouble(),
                             poiItem[i].noorLon.toDouble(), 1)
