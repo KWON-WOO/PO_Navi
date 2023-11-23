@@ -12,12 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.path_recyclerview.view.*
 class RecyclerViewAdapter(private val items: List<MapData>) :
 RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>(){
-
+//    아이템 갯수를 가져옴
     override fun getItemCount(): Int = items.size
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
+        //    클릭시 주소와 좌표 출력
         val listener = View.OnClickListener{ it ->
             Toast.makeText(it.context,"Clicked -> ID: ${item.name}, Address: ${item.address}\t" +
                     "Location: (${item.Latitiude},${item.Longitude}) ", Toast.LENGTH_SHORT).show()

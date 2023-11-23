@@ -5,12 +5,14 @@ import android.content.Intent
 import android.graphics.PointF
 import android.net.Uri
 import android.os.Bundle
+import android.provider.ContactsContract.CommonDataKinds.Website.URL
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.skt.Tmap.*
 import com.skt.Tmap.poi_item.TMapPOIItem
+import java.net.URL
 
 
 class MainActivity : AppCompatActivity() {
@@ -47,8 +49,10 @@ class MainActivity : AppCompatActivity() {
 //            검색버튼 이벤트. 테스트 중이라 네이버로 넘어가게 설정. 이후에 T맵 연동되도록 수정 예정
             searchButton.setOnClickListener {
                 val query = searchBar.text.toString()
-                if (query.isNotEmpty())
-                    showList(query, this)
+                if (query.isNotEmpty()){
+                    val json = searchPOI(query,getString(R.string.app_key1))
+                    showList(json,this)
+                }
             }
 
             tMapView.setOnClickListenerCallBack(object : TMapView.OnClickListenerCallback {
