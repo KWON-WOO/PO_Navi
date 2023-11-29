@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         val tmaptapi: TMapTapi = TMapTapi(this)
         // Tmap 설치여부 확인
         val isTmapApp: Boolean = tmaptapi.isTmapApplicationInstalled
-
+        val appKey = getString(R.string.app_key1)
 // 현재 테스트 디바이스에 TMap이 깔려있으나 작동이상으로 검토 중
         if (true) {
             setContentView(R.layout.activity_main)
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
             searchBar.setAdapter(adapter)
 
 
-            tMapView.setSKTMapApiKey(getString(R.string.app_key1))
+            tMapView.setSKTMapApiKey(appKey)
             linearLayoutTmap.addView(tMapView)
 
 
@@ -49,9 +49,9 @@ class MainActivity : AppCompatActivity() {
 //            검색버튼 이벤트. 테스트 중이라 네이버로 넘어가게 설정. 이후에 T맵 연동되도록 수정 예정
             searchButton.setOnClickListener {
                 val query = searchBar.text.toString()
+                val searchPOI = SearchPOI(appKey,this)
                 if (query.isNotEmpty()){
-                    val json = searchPOI(query,getString(R.string.app_key1))
-                    showList(json,this)
+                    searchPOI.searchPOI(query,appKey)
                 }
             }
 

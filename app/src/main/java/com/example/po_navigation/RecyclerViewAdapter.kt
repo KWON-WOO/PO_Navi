@@ -20,8 +20,8 @@ RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>(){
         val item = items[position]
         //    클릭시 주소와 좌표 출력
         val listener = View.OnClickListener{ it ->
-            Toast.makeText(it.context,"Clicked -> ID: ${item.name}, Address: ${item.address}\t" +
-                    "Location: (${item.Latitiude},${item.Longitude}) ", Toast.LENGTH_SHORT).show()
+            Toast.makeText(it.context,"Clicked -> ID: ${item.name}, Address: ${item.fullAddressRoad}\t" +
+                    "Location: (${item.noorLat},${item.noorLon}) ", Toast.LENGTH_SHORT).show()
         }
         holder.apply{
             bind(listener, item)
@@ -36,7 +36,7 @@ RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>(){
         private var view: View = v
         fun bind(listener: View.OnClickListener, item: MapData) {
             view.name_view.text = item.name
-            view.address_view.text = item.address
+            view.address_view.text = item.fullAddressRoad
             view.setOnClickListener(listener)
         }
 

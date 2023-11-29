@@ -4,8 +4,7 @@ import android.graphics.drawable.Drawable
 
 data class MapData(
     val name: String,
-    val address: String,
-    val Latitiude: Double,
-    val Longitude: Double,
-    val icon: Drawable
+    val fullAddressRoad: String,
+    val noorLat: Double,
+    val noorLon: Double
     )
