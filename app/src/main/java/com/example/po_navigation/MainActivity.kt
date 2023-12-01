@@ -49,9 +49,9 @@ class MainActivity : AppCompatActivity() {
 //            검색버튼 이벤트. 테스트 중이라 네이버로 넘어가게 설정. 이후에 T맵 연동되도록 수정 예정
             searchButton.setOnClickListener {
                 val query = searchBar.text.toString()
-                val searchPOI = SearchPOI(appKey,this)
+                val searchPOI = SearchPOI(query,appKey,this, this)
                 if (query.isNotEmpty()){
-                    searchPOI.searchPOI(query,appKey)
+                    searchPOI.start()
                 }
             }
 

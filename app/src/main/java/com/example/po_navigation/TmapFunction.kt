@@ -1,5 +1,6 @@
 package com.example.po_navigation
 
+import android.app.Activity
 import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -24,43 +25,39 @@ interface NetworkListener {
     fun onNetworkSuccess(data: String?): ArrayList<MapData>
 }
 
-class SearchPOI(AppKey:String, Activity:FragmentActivity) : OnNetworkListener {
-    val activity = Activity
-    val appKey = AppKey
-    fun searchPOI(searchKeyword: String, appKey: String){
+class SearchPOI(val searchKeyword:String, val appKey:String, val activity: Activity, val fragmentactivity:FragmentActivity) : Thread() {
+    override fun run() {
         val url = "https://apis.openapi.sk.com/tmap/pois?version=1&format=json&callback" +
                 "=result&appKey=${appKey}&searchKeyword=${searchKeyword}"
-
-        val networktask = NetworkTask(this)
-        networktask.execute(url)
-    }
-
-    override fun onNetworkSuccess(url: String?) {
         val json = URL(url).readText(Charsets.UTF_8)
-//        val jsonObject = JSONObject(json)
-//        val poiList = ArrayList<MapData>()
-//
-//        val poiArray = jsonObject.getJSONObject("searchPoiInfo")
-//            .getJSONObject("pois").getJSONArray("poi")
-//        val gson = Gson()
-//
-//        for (i in 0 until poiArray.length()) {
-//            val poiObject = poiArray.getJSONObject(i)
-//            val tmpPoiObject = JSONObject()
-//            tmpPoiObject.put("name", poiObject.getString("name"))
-//            tmpPoiObject.put(
-//                "fullAddressRoad", poiObject
-//                    .getJSONArray("newAddressList")
-//                    .getJSONObject(0).getString("fullAddressRoad")
-//            )
-//            tmpPoiObject.put("noorLat", poiObject.getString("name"))
-//            tmpPoiObject.put("noorLon", poiObject.getString("name"))
-//
-//            val poiData = gson.fromJson(tmpPoiObject.toString(), MapData::class.java)
-//            tmpPoiObject.put("name", poiObject.getString("name"))
-//            poiList.add(poiData)
-//            showList(poiList,appKey, activity)
-//        }
+        val jsonObject = JSONObject(json)
+        val poiList = ArrayList<MapData>()
+
+        val poiArray = jsonObject.getJSONObject("searchPoiInfo")
+            .getJSONObject("pois").getJSONArray("poi")
+        val gson = Gson()
+
+        for (i in 0 until poiArray.length()) {
+            val poiObject = poiArray.getJSONObject(i)
+            val tmpPoiObject = JSONObject()
+            tmpPoiObject.put("name", poiObject.getString("name"))
+            tmpPoiObject.put(
+                "fullAddressRoad", poiObject
+                    .getJSONObject("newAddressList")
+                    .getJSONArray("newAddress")
+                    .getJSONObject(0).getString("fullAddressRoad")
+            )
+            tmpPoiObject.put("noorLat", poiObject.getString("noorLat"))
+            tmpPoiObject.put("noorLon", poiObject.getString("noorLon"))
+
+            val poiData = gson.fromJson(tmpPoiObject.toString(), MapData::class.java)
+            tmpPoiObject.put("name", poiObject.getString("name"))
+            poiList.add(poiData)
+
+            activity.runOnUiThread {
+                showList(poiList, appKey, fragmentactivity)
+            }
+        }
     }
 }
 
