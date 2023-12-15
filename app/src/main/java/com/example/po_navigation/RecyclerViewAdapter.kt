@@ -10,23 +10,22 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.path_recyclerview.view.*
-class RecyclerViewAdapter(private val items: List<MapData>) :
+class RecyclerViewAdapter() :
 RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>(){
+    private var items : ArrayList<MapData> = ArrayList()
 //    아이템 갯수를 가져옴
     override fun getItemCount(): Int = items.size
 
+    fun setItem(POIList : ArrayList<MapData>){
+        if (!items.isNullOrEmpty()) {
+            items = POIList
+            notifyDataSetChanged()
+        }
+    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        //    클릭시 주소와 좌표 출력
-        val listener = View.OnClickListener{ it ->
-            Toast.makeText(it.context,"Clicked -> ID: ${item.name}, Address: ${item.fullAddressRoad}\t" +
-                    "Location: (${item.noorLat},${item.noorLon}) ", Toast.LENGTH_SHORT).show()
-        }
-        holder.apply{
-            bind(listener, item)
-            itemView.tag = item
-        }
+        holder.bind(item)
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder{
         val view = LayoutInflater.from(parent.context).inflate(R.layout.path_recyclerview,parent,false)
@@ -34,11 +33,11 @@ RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>(){
     }
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         private var view: View = v
-        fun bind(listener: View.OnClickListener, item: MapData) {
-            view.name_view.text = item.name
-            view.address_view.text = item.fullAddressRoad
-            view.setOnClickListener(listener)
+        fun bind(item: MapData) {
+            view.findViewById<TextView>(R.id.name_view).text = item.name
+            view.findViewById<TextView>(R.id.address_view).text = item.fullAddressRoad
         }
 
     }
+
 }

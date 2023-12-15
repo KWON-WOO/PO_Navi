@@ -23,7 +23,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_gravity = "top"
-            style="@style/RoundCardView"
             android:background="@color/white">
 
 <!--            기존에 있던 툴바를 지우고 추천검색어까지 지원하는 AutoCompleteTextView 적용. 아직 테스트 중-->

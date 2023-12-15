@@ -13,7 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 //수정예정
 @SuppressLint("ResourceType")
-class BSDListFragment(var adapter:RecyclerViewAdapter) : BottomSheetDialogFragment(R.style.AppBottomSheetDialogTheme) {
+class BSDListFragment(var adapter:RecyclerViewAdapter) : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,7 +25,7 @@ class BSDListFragment(var adapter:RecyclerViewAdapter) : BottomSheetDialogFragme
     override fun onViewCreated(view: View, savedInstanceState: Bundle?){
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<RecyclerView>(R.id.path_recycler_view).adapter = adapter
+        view.findViewById<RecyclerView>(R.id.recyclerView).adapter = adapter
     }
 }
 

@@ -62,11 +62,9 @@ class SearchPOI(val searchKeyword:String, val appKey:String, val activity: Activ
 }
 
 fun showList(poiList:ArrayList<MapData>, appKey: String, activity: FragmentActivity) {
-    val tmapdata = TMapData()
-    val recyclerView = activity.findViewById<RecyclerView>(R.id.path_recycler_view)
-
-    val adapter = RecyclerViewAdapter(poiList)
+    val adapter = RecyclerViewAdapter()
     val lFragment = BSDListFragment(adapter)
+    adapter.setItem(poiList)
     lFragment.show(activity.supportFragmentManager, "Tag")
 
 }
