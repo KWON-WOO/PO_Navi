@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                     arrayList2: ArrayList<TMapPOIItem?>?,
                     tMapPoint: TMapPoint?,
                     pointF: PointF?
-                ): Boolean {
+                ): Boolean {+
                     hideKeyboard(this@MainActivity, tMapView)
                     return false
                 }

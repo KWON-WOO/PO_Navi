@@ -27,6 +27,8 @@ RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>(){
         val item = items[position]
         holder.bind(item)
     }
+
+//    viewHolder 생성하는 함수, 최소 생성 횟수만큼만 호출
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder{
         val view = LayoutInflater.from(parent.context).inflate(R.layout.path_recyclerview,parent,false)
         return RecyclerViewAdapter.ViewHolder(view)

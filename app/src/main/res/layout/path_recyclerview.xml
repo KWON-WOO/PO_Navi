@@ -39,10 +39,11 @@
                 android:textSize="14dp" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/icon_view"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center" />
+<!--        <ImageView-->
+<!--            android:id="@+id/icon_view"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:src="@drawable/enter"/>-->
     </FrameLayout>
 </androidx.recyclerview.widget.RecyclerView>
