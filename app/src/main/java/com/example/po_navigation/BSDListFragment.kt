@@ -14,6 +14,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 //수정예정
 @SuppressLint("ResourceType")
 class BSDListFragment(var adapter:RecyclerViewAdapter) : BottomSheetDialogFragment() {
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

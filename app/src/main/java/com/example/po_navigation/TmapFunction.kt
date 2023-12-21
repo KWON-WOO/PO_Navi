@@ -7,6 +7,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.skt.Tmap.TMapData
 import org.json.JSONObject
 import com.google.gson.Gson
@@ -27,6 +28,8 @@ interface NetworkListener {
 
 class SearchPOI(val searchKeyword:String, val appKey:String, val activity: Activity, val fragmentactivity:FragmentActivity) : Thread() {
     override fun run() {
+
+        val bottomSheetDialog = showList(ArrayList(), appKey, fragmentactivity)
         val url = "https://apis.openapi.sk.com/tmap/pois?version=1&format=json&callback" +
                 "=result&appKey=${appKey}&searchKeyword=${searchKeyword}"
         val json = URL(url).readText(Charsets.UTF_8)
@@ -36,6 +39,7 @@ class SearchPOI(val searchKeyword:String, val appKey:String, val activity: Activ
         val poiArray = jsonObject.getJSONObject("searchPoiInfo")
             .getJSONObject("pois").getJSONArray("poi")
         val gson = Gson()
+
 
         for (i in 0 until poiArray.length()) {
             val poiObject = poiArray.getJSONObject(i)
@@ -54,17 +58,21 @@ class SearchPOI(val searchKeyword:String, val appKey:String, val activity: Activ
             tmpPoiObject.put("name", poiObject.getString("name"))
             poiList.add(poiData)
 
-            activity.runOnUiThread {
-                showList(poiList, appKey, fragmentactivity)
-            }
+        }
+        activity.runOnUiThread{
+            val recyclerView = bottomSheetDialog.findViewById<RecyclerView>(R.id.path_recycler_view)
         }
     }
 }
 
-fun showList(poiList:ArrayList<MapData>, appKey: String, activity: FragmentActivity) {
-    val adapter = RecyclerViewAdapter()
-    val lFragment = BSDListFragment(adapter)
-    adapter.setItem(poiList)
-    lFragment.show(activity.supportFragmentManager, "Tag")
+fun showList(poiList:ArrayList<MapData>, appKey: String, activity: FragmentActivity): BottomSheetDialog {
+    val bottomSheetDialog = BottomSheetDialog(activity)
+    activity.runOnUiThread {
+        bottomSheetDialog.setContentView(R.layout.location_search)
+        val recyclerview = bottomSheetDialog.findViewById<RecyclerView>(R.id.path_recycler_view)
 
+        recyclerview?.adapter = RecyclerViewAdapter(poiList)
+        bottomSheetDialog.show()
+    }
+    return bottomSheetDialog
 }
